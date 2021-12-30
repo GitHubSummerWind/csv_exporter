@@ -1,0 +1,16 @@
+{
+    "name": "zjh/csv-exporter",
+    "type": "composer-plugin",
+    "autoload": {
+        "psr-4": {
+            "Zjh\\Exporter\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "zjh",
+            "email": "308978303@qq.com"
+        }
+    ],
+    "require": {}
+}
