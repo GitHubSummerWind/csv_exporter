@@ -1,5 +1,5 @@
 <?php
-namespace Zjh\Exporter;
+namespace SummerWind\CsvExporter;
 
 use Encore\Admin\Grid;
 use Encore\Admin\Grid\Exporters\AbstractExporter;
