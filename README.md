@@ -57,4 +57,3 @@ class UserExport extends AdminCsvExporter
     }
 }
 ```
-
