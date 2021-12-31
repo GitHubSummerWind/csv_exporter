@@ -28,6 +28,12 @@ class AdminCsvExporter extends AbstractExporter {
     protected $columns = ['*'];
 
     /**
+     * 每次查询的数据量
+     * @var int
+     */
+    protected $perSize = 10000;
+
+    /**
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
      */
     public function query()
@@ -71,15 +77,9 @@ class AdminCsvExporter extends AbstractExporter {
         $fp = fopen('php://output', 'a');//打开output流
         fwrite($fp, "\xEF\xBB\xBF"); // 写入bom 头 可识别 utf8
         fputcsv($fp, $aTitle);//将数据格式化为CSV格式并写入到output流中
-        $accessNum = $oQuery->count();//从数据库获取总量，假设是一百万
 
-        $perSize = 10000;//每次查询的条数
-        $pages   = ceil($accessNum / $perSize);
-
-        // 导出全部 和 选择行
-        for($i = 1; $i <= $pages; $i++) {
-            $oCollection = $oQuery->get();
-            foreach($oCollection as $obj) {
+        $oQuery->chunkById($this->perSize,function ($collection) use($fp){
+            foreach($collection as $obj) {
                 $rowData = $this->map($obj); //返回 array
                 fputcsv($fp, $rowData);
             }
@@ -88,7 +88,7 @@ class AdminCsvExporter extends AbstractExporter {
             if (ob_get_level() > 0) {
                 ob_flush();
             }
-        }
+        });
         fclose($fp);
         exit();
     }
