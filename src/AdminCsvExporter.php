@@ -78,8 +78,8 @@ class AdminCsvExporter extends AbstractExporter {
         fwrite($fp, "\xEF\xBB\xBF"); // 写入bom 头 可识别 utf8
         fputcsv($fp, $aTitle);//将数据格式化为CSV格式并写入到output流中
 
-        $oQuery->chunkById($this->perSize,function ($collection) use($fp){
-            foreach($collection as $obj) {
+        $oQuery->chunkById($this->perSize,function ($oCollection) use($fp){
+            foreach($oCollection as $obj) {
                 $rowData = $this->map($obj); //返回 array
                 fputcsv($fp, $rowData);
             }
